@@ -2,7 +2,6 @@ package com.shop.api.service;
 
 import com.shop.api.dto.ProductDTO;
 import com.shop.api.entity.Product;
-import com.shop.api.repository.CategoryRepository;
 import com.shop.api.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -41,5 +40,10 @@ public class ProductService {
 
     public void delete(Long id){
         productRepository.deleteById(id);
+    }
+
+    public Product readById(Long id){
+        return productRepository.findById(id).orElseThrow(() ->
+                new RuntimeException("Product not found - " + id));
     }
 }
