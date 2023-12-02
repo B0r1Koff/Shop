@@ -1,31 +1,34 @@
 import React from "react";
 import './Registration.css'
 import { Link, useNavigate } from "react-router-dom";
+import { ADMIN_ROUTE, AUTHORIZATION_ROUTE, SHOP_ROUTE } from "../../utils/consts";
 
-const Registartion = () => {
+const Registartion = ({user}) => {
     const navigate = useNavigate()
 
     return(
         <div className="container">
             <div className="box">
-                <h3 className="h3"><span className="span"></span>Login</h3>
+                <h3 className="h3"><span className="span"></span>Авторизация</h3>
 
                 <div className="form">
 
                     <div className="input_box">
                         <input type="text" required className="input"/>
-                        <label className="label">Username</label>
+                        <label className="label">Email</label>
                     </div>
                     <div className="input_box">
                         <input type="text" required className="input"/>
-                        <label className="label">Password</label>
+                        <label className="label">Пароль</label>
                     </div>
 
                     <button type="submit" className="login-button" onClick={(e) => {
-                        navigate("/home")
-                    }}>Login</button>
+                        localStorage.setItem('loggedUser', JSON.stringify({"login":"aaa","password":"bbb","role":"admin"}))
+                        user.setUser({login:"aaa", password: "bbb", role:"admin"})
+                        navigate(ADMIN_ROUTE)
+                    }}>Авторизоваться</button>
 
-                    <p className="signup_link">Don't have an account ? <Link to={"/authorization"} className="a">Signup</Link></p>
+                    <p className="signup_link">Нет аккаунта ? <Link to={AUTHORIZATION_ROUTE} className="a">Зарегистрироваться</Link></p>
 
                 </div>
              

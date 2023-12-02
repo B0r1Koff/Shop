@@ -1,15 +1,14 @@
 package com.shop.api.dto;
 
-import jakarta.persistence.Lob;
 import lombok.Data;
+import org.springframework.web.multipart.MultipartFile;
 
 @Data
 public class ProductDTO {
+    private  Long id;
     private String name;
     private double price;
     private double discount;
     private Long categoryId;
-
-    @Lob
-    private byte[] image;
+    private MultipartFile image;
 }

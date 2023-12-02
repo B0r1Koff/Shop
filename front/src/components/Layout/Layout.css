@@ -1,0 +1,64 @@
+header{
+    width: 100%;
+    height: 50px;
+    display: flex;
+    
+}
+
+.h-link-auth{
+    text-decoration: none;
+    width: 25%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background:#8a2be2;
+    color: white;
+    font-weight: bold;
+}
+
+.h-link{
+  text-decoration: none;
+  width: 50%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background:#8a2be2;
+  color: white;
+  font-weight: bold;
+}
+
+.h-link:hover{
+    background:#c000b2aa;
+}
+
+.h-link-auth:hover{
+  background:#c000b2aa;
+}
+
+/* Общий стиль текста */
+.text {
+    font-size: 16px;
+  }
+  
+  /* Изменение размера текста для устройств с шириной экрана меньше 600 пикселей */
+  @media (max-width: 600px) {
+    .text {
+      font-size: 14px;
+    }
+  }
+  
+  /* Изменение размера текста для устройств с шириной экрана между 601 и 1200 пикселей */
+  @media (min-width: 601px) and (max-width: 1200px) {
+    .text {
+      font-size: 18px;
+    }
+  }
+  
+  /* Изменение размера текста для устройств с шириной экрана больше 1200 пикселей */
+  @media (min-width: 1201px) {
+    .text {
+      font-size: 20px;
+    }
+  }
