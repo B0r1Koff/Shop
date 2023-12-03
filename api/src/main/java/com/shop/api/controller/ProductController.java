@@ -34,10 +34,10 @@ public class ProductController {
         return new ResponseEntity<>(productService.readByCategoryId(id), HttpStatus.OK);
     }
 
-    @PutMapping("/update")
-    public ResponseEntity<Product> update(@RequestBody Product product){
-        return new ResponseEntity<>(productService.update(product), HttpStatus.OK);
-    }
+//    @PutMapping("/update")
+//    public ResponseEntity<Product> update(@RequestBody Product product){
+//        return new ResponseEntity<>(productService.update(product), HttpStatus.OK);
+//    }
 
     @DeleteMapping("/{id}")
     public HttpStatus delete(@PathVariable Long id){

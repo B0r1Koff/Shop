@@ -17,24 +17,29 @@ public class UserController {
 
     private final UserService userService;
 
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
     @PostMapping("/create")
     public ResponseEntity<Users> create(@RequestBody UserDTO dto){
         return new ResponseEntity<>(userService.create(dto), HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
     @GetMapping("/readAll")
     public ResponseEntity<List<Users>> readAll(){
         return new ResponseEntity<>(userService.readAll(), HttpStatus.OK);
     }
 
-    @PutMapping("/update")
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
+    @PostMapping("/update")
     public ResponseEntity<Users> update(@RequestBody Users user){
         return new ResponseEntity<>(userService.update(user), HttpStatus.OK);
     }
 
-    @DeleteMapping("/{id}")
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
+    @PostMapping("/{id}")
     public HttpStatus delete(@PathVariable Long id){
         userService.delete(id);
         return HttpStatus.OK;
     }
+
 }

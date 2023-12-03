@@ -34,11 +34,11 @@ export const publicRoutes = [
     },
     {
         path: REGISTRATION_ROUTE,
-        Component: Authorization
+        Component: Registartion
     },
     {
         path: AUTHORIZATION_ROUTE,
-        Component: Registartion
+        Component: Authorization
     },
     {
         path: PRODUCT_ROUTE + '/:id',

@@ -1,7 +1,7 @@
 import { useContext, useEffect } from 'react'
 import Home from './components/Home/Home'
-import Registration from './components/Registration/Registration'
-import Authorization from './components/Authorization/Authorization'
+import Registration from './components/Authorization/Authorization'
+import Authorization from './components/Registration/Registration'
 import Cart from './components/Cart/Cart'
 import Layout from './components/Layout/Layout'
 import {Route, Routes } from 'react-router-dom';
