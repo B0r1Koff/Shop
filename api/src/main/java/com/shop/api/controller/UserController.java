@@ -42,4 +42,10 @@ public class UserController {
         return HttpStatus.OK;
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
+    @GetMapping("/checkLogin/{email}")
+    public ResponseEntity<Users> checkLogin(@PathVariable String email){
+        return new ResponseEntity<>(userService.findByEmail(email), HttpStatus.OK);
+    }
+
 }

@@ -1,8 +1,6 @@
 package com.shop.api.service;
 
 import com.shop.api.dto.UserDTO;
-import com.shop.api.entity.Orders;
-import com.shop.api.entity.Product;
 import com.shop.api.entity.Users;
 import com.shop.api.repository.UserRepository;
 import lombok.AllArgsConstructor;
@@ -40,5 +38,9 @@ public class UserService {
     public Users readById(Long id){
         return userRepository.findById(id).orElseThrow(() ->
                 new RuntimeException("Product not found - " + id));
+    }
+
+    public Users findByEmail(String email){
+        return userRepository.findByEmail(email);
     }
 }

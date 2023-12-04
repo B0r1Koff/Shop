@@ -3,7 +3,7 @@ import "./Registration.css"
 import { Link, useNavigate } from "react-router-dom";
 import { REGISTRATION_ROUTE, SHOP_ROUTE } from "../../utils/consts";
 import { useState } from "react";
-import { getAllUsers, registration } from "../../http/userAPI";
+import { checkLogin, registration } from "../../http/userAPI";
 import { toJS } from 'mobx'
 import { useQuery } from "@tanstack/react-query";
 
@@ -12,15 +12,6 @@ const Registartion = ({user}) => {
     const [email, setEmail] = useState('')
     const [pass, setPass] = useState('')
     const [confPass, setConfPAss] = useState('')
-    const [users, setUsers] = useState([])
-
-    useEffect(() => {
-        setTimeout(() => {
-            getAllUsers().then(function(val){setUsers(val.data)})
-        }, 100)  
-      }, [])
-
-    const isLoginUnique = users.some(user => user.email === email);
 
     return(
         <div className="container">
@@ -58,16 +49,21 @@ const Registartion = ({user}) => {
                         e.preventDefault()
                         return
                     }
-                    if(isLoginUnique){
+
+                    const check = await checkLogin(email)
+
+                    if(check.data){
+                        console.log(check.data);
                         alert("Такой пользователь уже зарегистрирован!")
                         e.preventDefault()
                         return
-                    }
+                    }else{
                         const response = await registration(email, pass)
 
                         localStorage.setItem('loggedUser', JSON.stringify(toJS(response.data)))
                         user.setUser(toJS(response.data))
                         navigate(SHOP_ROUTE)
+                    }
                     
                 }}>Создать аккаунт</button>
                 <p className="login_link">Уже есть аккаунт ? <Link to={REGISTRATION_ROUTE} className="a">Войти</Link></p>

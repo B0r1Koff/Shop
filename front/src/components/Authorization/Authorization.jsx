@@ -4,22 +4,13 @@ import { Link, useNavigate } from "react-router-dom";
 import { ADMIN_ROUTE, AUTHORIZATION_ROUTE, SHOP_ROUTE } from "../../utils/consts";
 import { useState, useEffect } from "react";
 import { toJS } from 'mobx'
-import { getAllUsers } from "../../http/userAPI";
+import { checkLogin, getAllUsers } from "../../http/userAPI";
 
 const Authorization = ({user}) => {
+    
     const navigate = useNavigate()
-
-    const [users, setUsers] = useState([])
     const [email, setEmail] = useState('')
     const [pass, setPass] = useState('')
-
-    useEffect(() => {
-        setTimeout(() => {
-            getAllUsers().then(function(val){setUsers(val.data)})
-        }, 100)  
-    }, [])
-
-    const isLogin = users.findIndex(user => user.email === email && user.password === pass);
 
     return(
         <div className="container">
@@ -37,23 +28,26 @@ const Authorization = ({user}) => {
                         <label className="label">Пароль</label>
                     </div>
 
-                    <button type="submit" className="login-button" onClick={(e) => {
+                    <button type="submit" className="login-button" onClick={async(e) => {
 
                         if(email === "" || pass === ""){
                             alert("Заполните все поля!")
                             e.preventDefault()
                             return
                         }
-                        if(isLogin){
-                            localStorage.setItem('loggedUser', JSON.stringify(toJS(users[isLogin])))
-                            user.setUser(toJS(users[isLogin]))
-                            if(users[isLogin].role === "user"){
+
+                        const check = await checkLogin(email)
+
+                        if(check.data){
+                            localStorage.setItem('loggedUser', JSON.stringify(toJS(check.data)))
+                            user.setUser(toJS(check.data))
+                            if(check.data.role === "user"){
                                 navigate(SHOP_ROUTE)
                             }else{
                                 navigate(ADMIN_ROUTE)
                             } 
                         }else{
-                            alert("Неверный логин или пароль!")
+                            alert("Пользователь не найден!")
                             e.preventDefault()
                             return
                         }

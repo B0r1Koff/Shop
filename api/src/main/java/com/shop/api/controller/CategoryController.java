@@ -22,11 +22,13 @@ public class CategoryController {
 
     private final CategoryService categoryService;
 
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
     @PostMapping("/create")
     public ResponseEntity<Category> create(@RequestBody CategoryDTO dto){
         return new ResponseEntity<>(categoryService.create(dto), HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
     @GetMapping("/readAll")
     public ResponseEntity<List<Category>> readAll(){
         return new ResponseEntity<>(categoryService.readAll(), HttpStatus.OK);

@@ -19,26 +19,31 @@ public class ProductController {
 
     private final ProductService productService;
 
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
     @PostMapping("/create")
     public ResponseEntity<Product> create(@ModelAttribute ProductDTO dto) throws IOException {
         return new ResponseEntity<>(productService.create(dto), HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
     @GetMapping("/readAll")
     public ResponseEntity<List<ProductResponce>> readAll(){
         return new ResponseEntity<>(productService.readAll(), HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
     @GetMapping("/category/{id}")
     public ResponseEntity<List<Product>> readByCategoryId(@PathVariable Long id){
         return new ResponseEntity<>(productService.readByCategoryId(id), HttpStatus.OK);
     }
 
-//    @PutMapping("/update")
-//    public ResponseEntity<Product> update(@RequestBody Product product){
-//        return new ResponseEntity<>(productService.update(product), HttpStatus.OK);
-//    }
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
+    @PutMapping("/update")
+    public ResponseEntity<Product> update(@RequestBody ProductDTO product) throws IOException {
+        return new ResponseEntity<>(productService.update(product), HttpStatus.OK);
+    }
 
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
     @DeleteMapping("/{id}")
     public HttpStatus delete(@PathVariable Long id){
         productService.delete(id);
