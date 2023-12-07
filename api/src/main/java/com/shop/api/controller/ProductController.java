@@ -49,4 +49,10 @@ public class ProductController {
         productService.delete(id);
         return HttpStatus.OK;
     }
+
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
+    @GetMapping("/readById/{id}")
+    public ResponseEntity<Product> readById(@PathVariable Long id){
+        return new ResponseEntity<>(productService.readById(id), HttpStatus.OK);
+    }
 }

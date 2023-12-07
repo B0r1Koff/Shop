@@ -14,23 +14,23 @@ import { observer } from 'mobx-react-lite'
 import Product from './components/Product/Product'
 import UserStore from './store/userStore'
 import { toJS } from 'mobx'
+import CartStore from './store/cartStore'
 
 const user = new UserStore()
+const cart = new CartStore()
 
 const App = observer(() =>  {
   
   useEffect(() => {
     const raw = localStorage.getItem('loggedUser') || false
-    try{
-      user.setUser(JSON.parse(raw))
-    }catch{
-      console.log("parse error");
-    }
+    user.setUser(JSON.parse(raw))
   }, [])
-
   useEffect(() => {
     localStorage.setItem('loggedUser', JSON.stringify(toJS(user.user)))
   }, [toJS(user.user)])
+  useEffect(() => {
+    cart.loadCartFromLocalStorage()
+  }, [])
   
   return (
       <div>
@@ -40,12 +40,12 @@ const App = observer(() =>  {
           <Routes>
             <Route path={REGISTRATION_ROUTE}element={<Registration user={user}/>}></Route>
             <Route path={AUTHORIZATION_ROUTE} element={<Authorization user={user}/>}></Route>
-            <Route path={SHOP_ROUTE} element={<Layout role={user.user.role}/>}>
-              <Route path={CART_ROUTE} element={<Cart/>}></Route>
-              <Route path={PROFILE_ROUTE} element={<Profile/>}></Route>
+            <Route path={SHOP_ROUTE} element={<Layout role = {user.user.role} cart = {cart}/>}>
+              <Route path={CART_ROUTE} element={<Cart user = {user.user} cart = {cart}/>}></Route>
+              <Route path={PROFILE_ROUTE} element={<Profile user = {user.user}/>}></Route>
               <Route path={ADMIN_ROUTE} element={<Admin/>}></Route>
               <Route path={ORDERS_ROUTE} element={<Orders/>}></Route>
-              <Route path={SHOP_ROUTE} element={<Home/>}></Route>
+              <Route path={SHOP_ROUTE} element={<Home user = {user.user} cart = {cart}/>}></Route>
               <Route path={PRODUCT_ROUTE + "/:id"} element={<Product/>}></Route>
             </Route>
           </Routes>
@@ -57,7 +57,7 @@ const App = observer(() =>  {
             <Route path={REGISTRATION_ROUTE}element={<Registration user={user}/>}></Route>
             <Route path={AUTHORIZATION_ROUTE} element={<Authorization user={user}/>}></Route>
             <Route path={SHOP_ROUTE} element={<Layout role={user.user.role}/>}>
-              <Route path={SHOP_ROUTE} element={<Home/>}></Route>
+              <Route path={SHOP_ROUTE} element={<Home user = {user.user}/>}></Route>
               <Route path={PRODUCT_ROUTE + "/:id"} element={<Product/>}></Route>
             </Route>
           </Routes>

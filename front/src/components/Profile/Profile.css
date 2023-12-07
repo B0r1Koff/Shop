@@ -1,0 +1,45 @@
+/* ProfileComponent.css */
+
+.profile-container {
+    border: 1px solid #8a2be2;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    margin: 20px;
+  }
+  
+  .profile-header {
+    color: #8a2be2;
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .profile-field {
+    color: #8a2be2;
+    margin-bottom: 10px;
+  }
+  
+  .edit-input {
+    background-color: #c000b2aa;
+    color: #fff;
+    border: none;
+    padding: 5px;
+    border-radius: 5px;
+    margin-right: 10px;
+  }
+  
+  .edit-button {
+    background-color: #8a2be2;
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-right: 5px;
+  }
+  
+  .edit-button:hover {
+    background-color: #c000b2aa;
+  }
+  

@@ -5,6 +5,11 @@ export const registration = async (email, password, role) => {
     return response
 }
 
+export const updateUser = async (id, email, password, role) => {
+    const response = await $host.post('users/update', {id, email, password, role})
+    return response
+}
+
 export const getAllUsers = async () => {
     const response = await $host.get('users/readAll')
     return response

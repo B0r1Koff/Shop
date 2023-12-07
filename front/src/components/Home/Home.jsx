@@ -3,16 +3,17 @@ import { useQuery } from "@tanstack/react-query";
 import { useState } from "react";
 import './Home.css'
 import { observer } from "mobx-react-lite";
-import { useNavigate } from "react-router-dom";
-import { PRODUCT_ROUTE } from "../../utils/consts";
 import { getAllProducts } from "../../http/productAPI";
 import { getAllCategories } from "../../http/categoriesAPI";
+import { getByUserId } from "../../http/favouritesAPI";
+import ProductCard from "../ProductCard.jsx/ProductCard";
 
-const Home = observer(() => {
+const Home = observer(({user, cart}) => {
     const [productsArr, setProducts] = useState([])
     const [categories, setCategories] = useState([])
     const [exchangeRates, setExchangeRates] = useState({});
     const [baseCurrency, setBaseCurrency] = useState('BYN');
+    const [liked, setLiked] = useState([])
   
     useEffect(() => {
       const fetchExchangeRates = async () => {
@@ -39,16 +40,18 @@ const Home = observer(() => {
          })
         }, 10)  
     }, [])
+    useEffect(() => {
+        setTimeout(() => {
+           getByUserId(user.id).then(function(val){setLiked(val.data)
+         })
+        }, 10)  
+    }, [user.id])
 
     const [value, setValue] = useState('Все категории');
     const [name, setName] = useState('')
     const [currencyValue, setCurrencyValue] = useState('BYN')
-    const [liked, setLiked] = useState([1, 2, 4])
 
     const currency = [{id: 1, name: "BYN", rate: exchangeRates.BYN}, {id: 2, name: "RUB", rate: exchangeRates.RUB}, {id: 3, name: "USD", rate: exchangeRates.USD}, {id: 4, name: "EUR", rate: exchangeRates.EUR}]
-    const likedUrl = "public/images/liked.png"
-    const unLikedUrl = "public/images/nliked.png"
-    const navigate = useNavigate()
 
     let getCategoryById = (id) =>  {
         const category = categories.find(item => item.id === id);
@@ -91,26 +94,19 @@ const Home = observer(() => {
                     if(value === "Все категории" || value === getCategoryById(product.category.id)){
                         if(name === "" || product.name.toLowerCase().includes(name.toLowerCase())){
                             return(
-                                <div key={product.id} className="product-card" onClick={(e) => {
-                                    navigate(PRODUCT_ROUTE + "/" + product.id)
-                                }}>
-                                    <div className="product-image">
-                                        <img src={getImg(product.image)} alt="" />
-                                    </div>
-                                    <div className="product-info">
-                                        <h3 className="product-title">{product.name}</h3>
-                                        <p className="product-price">{product.price * getRateById(currencyValue)} {currencyValue}</p>
-                                        <div className="prod-buttons">
-                                            <button className="add-to-cart" onClick={
-                                                (e)=>{e.stopPropagation()}
-                                                }>B корзину</button>
-                                            <img id={product.id} className="like" src={liked.includes(product.id) ? likedUrl : unLikedUrl} alt="" onClick={e => {
-                                                
-                                            }}/>
-                                        </div>
-                                        
-                                    </div>
-                                </div>
+
+                                <ProductCard 
+                                    key={product.id}
+                                    product={product}
+                                    getRateById={getRateById}
+                                    getImg={getImg}
+                                    currencyValue={currencyValue}
+                                    liked={liked}
+                                    userId={user.id}
+                                    cart={cart}
+                                    setLiked={setLiked}
+                                />
+
                             );
                         }
                         

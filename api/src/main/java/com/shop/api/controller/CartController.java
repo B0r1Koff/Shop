@@ -17,22 +17,26 @@ public class CartController {
 
     private final CartService cartService;
 
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
     @PostMapping("/create")
     public ResponseEntity<Cart> create(@RequestBody CartDTO dto){
         return new ResponseEntity<>(cartService.create(dto), HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
     @GetMapping("/users/{id}")
     public ResponseEntity<List<Cart>> readByUserId(@PathVariable Long id){
         return new ResponseEntity<>(cartService.readByUserId(id), HttpStatus.OK);
     }
 
-    @PostMapping("/product/{id}")
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
+    @PostMapping("/delete/{id}")
     public HttpStatus delete(@PathVariable Long id){
         cartService.delete(id);
         return HttpStatus.OK;
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
     @PostMapping("/update")
     public ResponseEntity<Cart> update(@RequestBody Cart cart){
         return new ResponseEntity<>(cartService.update(cart), HttpStatus.OK);

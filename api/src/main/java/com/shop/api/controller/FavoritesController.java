@@ -20,17 +20,20 @@ public class FavoritesController {
 
     private final FavoritesServise favoritesServise;
 
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
     @PostMapping("/create")
     public ResponseEntity<Favorites> create(@RequestBody FavoritesDTO dto){
         return new ResponseEntity<>(favoritesServise.create(dto), HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
     @GetMapping("/users/{id}")
     public ResponseEntity<List<Favorites>> readByUserId(@PathVariable Long id){
         return new ResponseEntity<>(favoritesServise.readByUserId(id), HttpStatus.OK);
     }
 
-    @DeleteMapping("/product/{id}")
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
+    @PostMapping("/delete/{id}")
     public HttpStatus delete(@PathVariable Long id){
         favoritesServise.delete(id);
         return HttpStatus.OK;
