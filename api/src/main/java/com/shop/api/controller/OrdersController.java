@@ -18,21 +18,25 @@ public class OrdersController {
 
     private final OrdersService orderService;
 
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
     @PostMapping("/create")
     public ResponseEntity<Orders> create(@RequestBody OrdersDTO dto){
         return new ResponseEntity<>(orderService.create(dto), HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
     @GetMapping("/users/{id}")
     public ResponseEntity<List<Orders>> readByUserId(@PathVariable Long id){
         return new ResponseEntity<>(orderService.readByUserId(id), HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
     @GetMapping("/getAll")
     public ResponseEntity<List<Orders>> findAll(){
         return new ResponseEntity<>(orderService.findAll(), HttpStatus.OK);
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
     @Transactional
     @PostMapping("/delete/{number}")
     public ResponseEntity<Void> delete(@PathVariable int number){
@@ -40,6 +44,7 @@ public class OrdersController {
         return ResponseEntity.noContent().build();
     }
 
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
     @PostMapping("/update")
     public ResponseEntity<Orders> update(@RequestBody Orders order){
         return new ResponseEntity<>(orderService.update(order), HttpStatus.OK);

@@ -4,6 +4,9 @@ import { motion } from "framer-motion";
 import "./Profile.css"
 import { updateUser } from "../../http/userAPI";
 import { toJS } from 'mobx';
+import { getUsersOrder } from "../../http/ordersAPI";
+import OrderComponent from "./OrderComponent";
+import OrdersListComponent from "./OrdersListComponent";
 
 const Profile = observer(({user}) => {
 
@@ -14,6 +17,7 @@ const Profile = observer(({user}) => {
   const [role, setRole] = useState();
   const [newUsername, setNewUsername] = useState('');
   const [newPassword, setNewPassword] = useState('');
+  const [usersOrders, setUsersOrders] = useState([])
 
   useEffect(() => {
     setUsername(user.email)
@@ -23,6 +27,14 @@ const Profile = observer(({user}) => {
     setUserId(user.id)
     setRole(user.role)
 }, [user])
+
+useEffect(() => {
+  setTimeout(() => {
+    getUsersOrder(user.id).then(function(val){setUsersOrders(val.data)
+      console.log(usersOrders);
+  })
+ }, 10) 
+}, [user.id])
 
   const handleEditClick = () => {
     setEditing(!isEditing);
@@ -39,14 +51,14 @@ const Profile = observer(({user}) => {
   };
 
   return (
-    <div className="profile">
-        <motion.div
-            className="profile-container"
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
-        >
+    <motion.div className="profile"
+    
+    initial={{ opacity: 0, y: -20 }}
+    animate={{ opacity: 1, y: 0 }} 
+    exit={{ opacity: 0, y: -20 }}
+    transition={{ duration: 0.5 }}
+    >
+        <div className="profile-container">
             <h2 className="profile-header">Профиль</h2>
             <p>Email</p>
             <p className="profile-field">
@@ -70,8 +82,13 @@ const Profile = observer(({user}) => {
                 {isEditing ? 'Сохранить' : 'Редактировать'}
             </button>
             {isEditing && <button className="edit-button" onClick={(e) => setEditing(!isEditing)}>Отмена</button>}
-        </motion.div>
-    </div>
+        </div>
+
+        <div className="profile-container">
+          <h2 className="profile-header">Мои заказы</h2>
+          <OrdersListComponent orders={usersOrders} />
+        </div>
+    </motion.div>
   )
 })
 

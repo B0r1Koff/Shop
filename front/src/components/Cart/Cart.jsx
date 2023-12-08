@@ -2,22 +2,19 @@ import React, { useEffect, useState } from "react";
 import './Cart.css'
 import { observer } from "mobx-react-lite";
 import { motion } from "framer-motion";
+import { createOrder } from "../../http/ordersAPI";
 
 const Cart = observer(({user, cart}) => {
 
     const [cartItems, setCartItems] = useState([])
-    const [price, setPrice] = useState(0)
+    const [userId, setUserId] = useState([])
 
     useEffect(() => {
       setCartItems(cart.cartItems)
     }, [cart.cartItems])
     useEffect(() => {
-      let fullPrice = 0
-      cartItems.map(item => {
-          fullPrice += item.product.price * item.quantity
-      })
-      setPrice(fullPrice)
-    }, [cart.cartItems])
+      setUserId(user.id)
+    }, [user.id])
 
     const getImg = (image) => {
         return "data:image/jpeg;base64,"+image.body
@@ -63,12 +60,14 @@ const Cart = observer(({user, cart}) => {
       </div>
         )
     })}
-        <button className="save-order" onClick={(e) => {
+        <button className="save-order" onClick={async(e) => {
+          const number = Math.floor(Math.random() * (1000000 - 1 + 1)) + 1
           cartItems.map(item => {
             if(item){
-              console.log("aaa");
+              const responce = createOrder(item.product.price*item.quantity, number, item.quantity, "оформлен", item.product.id, userId)
             }
           })
+          cart.clearCart()
         }}>Оформить заказ</button>
       </motion.div>        
     );
