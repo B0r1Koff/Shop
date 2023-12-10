@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useState } from "react";
 import OrderComponent from "./OrderComponent";
 
 const groupOrdersByOrderId = (orders) => {
     const groupedOrders = {};
 
   orders.forEach((order) => {
-    if (!groupedOrders[order.number]) {
-      groupedOrders[order.number] = [order];
-    } else {
-      groupedOrders[order.number].push(order);
+    if(order.status !== "отменен"){
+        if (!groupedOrders[order.number]) {
+            groupedOrders[order.number] = [order];
+        } else {
+            groupedOrders[order.number].push(order);
+        } 
     }
+    
   });
 
   return Object.entries(groupedOrders).map(([number, orderItems]) => ({
@@ -20,12 +23,11 @@ const groupOrdersByOrderId = (orders) => {
 
 const OrdersListComponent = ({ orders }) => {
     const groupedOrders = groupOrdersByOrderId(orders);
-    console.log(groupedOrders);
   
     return (
       <div>
         {groupedOrders.map(({ number, orderItems }, index) => (
-          <OrderComponent key={index} number = {number} orderItems={orderItems} />
+          <OrderComponent key={index} number = {number} orderItems = {orderItems} />
         ))}
       </div>
     );

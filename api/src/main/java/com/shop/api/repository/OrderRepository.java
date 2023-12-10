@@ -12,6 +12,4 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Orders, Long> {
     List<Orders> findByUserId(Long id);
     void deleteByNumber(int number);
-
-//    private EntityManager
 }

@@ -3,7 +3,9 @@ package com.shop.api.service;
 import com.shop.api.dto.OrdersDTO;
 import com.shop.api.entity.Orders;
 import com.shop.api.repository.OrderRepository;
+import com.shop.api.utils.DeleteOrders;
 import lombok.AllArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -32,8 +34,8 @@ public class OrdersService {
         return orderRepository.findByUserId(id);
     }
 
-    public void deleteByNumber(int number){
-        orderRepository.deleteByNumber(number);
+    public void deleteByNumber(Long id){
+        orderRepository.deleteById(id);
     }
 
     public List<Orders> findAll(){ return orderRepository.findAll(); }

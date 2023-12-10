@@ -46,7 +46,7 @@ const App = observer(() =>  {
               <Route path={ADMIN_ROUTE} element={<Admin/>}></Route>
               <Route path={ORDERS_ROUTE} element={<Orders/>}></Route>
               <Route path={SHOP_ROUTE} element={<Home user = {user.user} cart = {cart}/>}></Route>
-              <Route path={PRODUCT_ROUTE + "/:id"} element={<Product/>}></Route>
+              <Route path={PRODUCT_ROUTE + "/:id"} element={<Product user = {user.user}/>}></Route>
             </Route>
           </Routes>
         }

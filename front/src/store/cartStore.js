@@ -1,4 +1,3 @@
-// CartStore.js
 import { makeAutoObservable } from 'mobx';
 
 export default class CartStore {
@@ -49,12 +48,10 @@ export default class CartStore {
     this.saveCartToLocalStorage();
   }
 
-  // Сохранение корзины в localStorage
   saveCartToLocalStorage() {
     localStorage.setItem('cart', JSON.stringify(this.cartItems));
   }
 
-  // Загрузка корзины из localStorage
   loadCartFromLocalStorage() {
     const storedCart = localStorage.getItem('cart');
     this.cartItems = storedCart ? JSON.parse(storedCart) : [];

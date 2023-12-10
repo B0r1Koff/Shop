@@ -31,7 +31,6 @@ const Profile = observer(({user}) => {
 useEffect(() => {
   setTimeout(() => {
     getUsersOrder(user.id).then(function(val){setUsersOrders(val.data)
-      console.log(usersOrders);
   })
  }, 10) 
 }, [user.id])
@@ -84,10 +83,13 @@ useEffect(() => {
             {isEditing && <button className="edit-button" onClick={(e) => setEditing(!isEditing)}>Отмена</button>}
         </div>
 
-        <div className="profile-container">
-          <h2 className="profile-header">Мои заказы</h2>
-          <OrdersListComponent orders={usersOrders} />
-        </div>
+        {role === "user" &&
+          <div className="profile-container">
+            <h2 className="profile-header">Мои заказы</h2>
+            <OrdersListComponent orders={usersOrders} />
+          </div>
+        }
+        
     </motion.div>
   )
 })

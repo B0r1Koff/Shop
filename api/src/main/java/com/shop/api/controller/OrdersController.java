@@ -37,11 +37,10 @@ public class OrdersController {
     }
 
     @CrossOrigin(origins = "http://127.0.0.1:5173")
-    @Transactional
-    @PostMapping("/delete/{number}")
-    public ResponseEntity<Void> delete(@PathVariable int number){
-        orderService.deleteByNumber(number);
-        return ResponseEntity.noContent().build();
+    @PostMapping("/delete/{id}")
+    public HttpStatus delete(@PathVariable Long id){
+        orderService.deleteByNumber(id);
+        return HttpStatus.OK;
     }
 
     @CrossOrigin(origins = "http://127.0.0.1:5173")

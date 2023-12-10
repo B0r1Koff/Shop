@@ -6,7 +6,7 @@ import { like, unLike } from "../../http/favouritesAPI";
 import { getByUserId } from "../../http/favouritesAPI";
 import { motion } from "framer-motion";
 
-const ProductCard = ({product, getRateById, getImg, currencyValue, liked, userId, cart, setLiked}) => {
+const ProductCard = ({product, getRateById, getImg, currencyValue, liked, userId, cart, setLiked, user}) => {
 
     const likedUrl = "public/images/liked.png"
     const unLikedUrl = "public/images/nliked.png"
@@ -25,7 +25,7 @@ const ProductCard = ({product, getRateById, getImg, currencyValue, liked, userId
         liked.find(like => like.product.id === product.id) && setUrl(likedUrl)
     }, [])
     useEffect(() => {
-        cart.cartItems.find(cartItem => cartItem.product.id === product.id) && setCartButtonValue("Из корзины")
+        user && cart.cartItems.find(cartItem => cartItem.product.id === product.id) && setCartButtonValue("Из корзины")
   }, [])
 
     return(
@@ -47,8 +47,9 @@ const ProductCard = ({product, getRateById, getImg, currencyValue, liked, userId
             <div className="product-info">
                 <h3 className="product-title">{product.name}</h3>
                 <p className="product-price">{product.price * getRateById(currencyValue)} {currencyValue}</p>
+                {user.role === "user" &&
                 <div className="prod-buttons">
-                    <button className="add-to-cart" disabled={!userId} onClick={
+                    <button className="add-to-cart" onClick={
                         (e)=>{e.stopPropagation()
                         if(!cart.cartItems.find(cartItem => cartItem.product.id === product.id)){
                             cart.addToCart(product)
@@ -65,22 +66,21 @@ const ProductCard = ({product, getRateById, getImg, currencyValue, liked, userId
                         if(userId){
                             if(liked.some(like => like.product.id === product.id)){
                                 const response = await unLike(likeId)
-                                console.log(response);
                                 setUrl(unLikedUrl)
                             }else{
                                 const response = await like(product.id, userId)
-                                console.log(response);
                                 setUrl(likedUrl)
                             }
                             setTimeout(() => {
                                 getByUserId(userId).then(function(val){setLiked(val.data)
-                                    console.log(liked);
                               })
                              }, 100)
                         }
                         
                     }}/>
                 </div>
+                }
+                
                 
             </div>
         </motion.div>

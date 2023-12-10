@@ -50,7 +50,7 @@ const Cart = observer(({user, cart}) => {
           <button className="plus-btn" type="button" name="button" onClick={(e) => {
             cart.updateCartItemQuantity(item.product.id, 1)
           }}>+</button>
-            <input type="text" name="name" value={item.quantity}/>
+            <input type="text" name="name" readOnly value={item.quantity}/>
           <button className="plus-btn" type="button" name="button" onClick={(e) => {
             cart.updateCartItemQuantity(item.product.id, -1)
           }}>-</button>

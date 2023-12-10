@@ -33,7 +33,7 @@ public class ProductController {
 
     @CrossOrigin(origins = "http://127.0.0.1:5173")
     @GetMapping("/category/{id}")
-    public ResponseEntity<List<Product>> readByCategoryId(@PathVariable Long id){
+    public ResponseEntity<List<ProductResponce>> readByCategoryId(@PathVariable Long id){
         return new ResponseEntity<>(productService.readByCategoryId(id), HttpStatus.OK);
     }
 
@@ -54,5 +54,11 @@ public class ProductController {
     @GetMapping("/readById/{id}")
     public ResponseEntity<Product> readById(@PathVariable Long id){
         return new ResponseEntity<>(productService.readById(id), HttpStatus.OK);
+    }
+
+    @CrossOrigin(origins = "http://127.0.0.1:5173")
+    @GetMapping("/getById/{id}")
+    public ResponseEntity<List<ProductResponce>> getById(@PathVariable Long id){
+        return new ResponseEntity<>(productService.getById(id), HttpStatus.OK);
     }
 }
