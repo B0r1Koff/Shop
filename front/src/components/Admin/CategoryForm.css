@@ -1,0 +1,19 @@
+.category-form {
+    margin: 10px;
+    padding: 10px;
+    background-color: #c000b2aa;
+    color: #fff;
+  }
+  
+  input {
+    margin: 5px;
+    padding: 8px;
+  }
+  
+  button {
+    background-color: #8a2be2;
+    color: #fff;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+  }

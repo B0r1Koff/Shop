@@ -7,6 +7,7 @@ import { toJS } from 'mobx';
 import { getUsersOrder } from "../../http/ordersAPI";
 import OrderComponent from "./OrderComponent";
 import OrdersListComponent from "./OrdersListComponent";
+import { useQuery } from "@tanstack/react-query";
 
 const Profile = observer(({user}) => {
 
@@ -19,6 +20,16 @@ const Profile = observer(({user}) => {
   const [newPassword, setNewPassword] = useState('');
   const [usersOrders, setUsersOrders] = useState([])
 
+  const orders = useQuery({
+    queryKey: ["orders"],
+    queryFn: async () => getUsersOrder(user.id), 
+  })
+
+  useEffect(() => {
+    if(!orders.isPending)
+      setUsersOrders(orders.data.data)
+  }, [orders.data])
+
   useEffect(() => {
     setUsername(user.email)
     setNewUsername(user.email)
@@ -28,12 +39,12 @@ const Profile = observer(({user}) => {
     setRole(user.role)
 }, [user])
 
-useEffect(() => {
-  setTimeout(() => {
-    getUsersOrder(user.id).then(function(val){setUsersOrders(val.data)
-  })
- }, 10) 
-}, [user.id])
+// useEffect(() => {
+//   setTimeout(() => {
+//     getUsersOrder(user.id).then(function(val){setUsersOrders(val.data)
+//   })
+//  }, 10) 
+// }, [user.id])
 
   const handleEditClick = () => {
     setEditing(!isEditing);
@@ -44,7 +55,6 @@ useEffect(() => {
     setPassword(newPassword || password);
     setEditing(false);
     const response = await updateUser(userId, newUsername, newPassword, role)
-    console.log(response);
     localStorage.setItem('loggedUser', JSON.stringify(toJS(response.data)))
     user.setUser(toJS(response.data))
   };
@@ -86,7 +96,7 @@ useEffect(() => {
         {role === "user" &&
           <div className="profile-container">
             <h2 className="profile-header">Мои заказы</h2>
-            <OrdersListComponent orders={usersOrders} />
+            <OrdersListComponent orders={usersOrders} user={user}/>
           </div>
         }
         

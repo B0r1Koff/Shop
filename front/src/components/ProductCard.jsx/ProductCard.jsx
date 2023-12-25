@@ -17,7 +17,7 @@ const ProductCard = ({product, getRateById, getImg, currencyValue, liked, userId
     const [cartButtonValue, setCartButtonValue] = useState("В корзину")
 
     useEffect(() => {
-          liked.map(like => {
+        liked.map(like => {
             if(product.id === like.product.id){
                 setLikeId(like.id)
             }
@@ -28,19 +28,43 @@ const ProductCard = ({product, getRateById, getImg, currencyValue, liked, userId
         user && cart.cartItems.find(cartItem => cartItem.product.id === product.id) && setCartButtonValue("Из корзины")
   }, [])
 
+  const handleAddToCartClick = (e) => {
+    e.stopPropagation()
+    if(!cart.cartItems.find(cartItem => cartItem.product.id === product.id)){
+        cart.addToCart(product)
+        setCartButtonValue("Из корзины")
+    }else{
+        cart.removeFromCart(product.id)
+        setCartButtonValue("В корзину")
+    }
+  } 
+
+  const handleLikeClick = async(e) => {
+    e.stopPropagation()
+    if(userId){
+        if(liked.some(like => like.product.id === product.id)){
+            const response = await unLike(likeId)
+            setUrl(unLikedUrl)
+        }else{
+            const response = await like(product.id, userId)
+            setUrl(likedUrl)
+        }
+        setTimeout(() => {
+            getByUserId(userId).then(function(val){setLiked(val.data)})
+        }, 100)
+    }
+}
+
     return(
         <motion.div 
-
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        exit={{ opacity: 0, y: -20 }}
-        transition={{ duration: 0.5 }}
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ duration: 0.5 }}
         
-        className="product-card" 
-        
-        onClick={(e) => {
-            navigate(PRODUCT_ROUTE + "/" + product.id)
-        }}>
+            className="product-card" 
+            onClick={(e) => {navigate(PRODUCT_ROUTE + "/" + product.id)}}
+        >
             <div className="product-image">
                 <img src={getImg(product.image)} alt="" />
             </div>
@@ -48,40 +72,13 @@ const ProductCard = ({product, getRateById, getImg, currencyValue, liked, userId
                 <h3 className="product-title">{product.name}</h3>
                 <p className="product-price">{product.price * getRateById(currencyValue)} {currencyValue}</p>
                 {user.role === "user" &&
-                <div className="prod-buttons">
-                    <button className="add-to-cart" onClick={
-                        (e)=>{e.stopPropagation()
-                        if(!cart.cartItems.find(cartItem => cartItem.product.id === product.id)){
-                            cart.addToCart(product)
-                            setCartButtonValue("Из корзины")
-                        }else{
-                            cart.removeFromCart(product.id)
-                            setCartButtonValue("В корзину")
-                        }
-                        }
-                        }>{cartButtonValue}</button>
-                    <img id={product.id} className="like" src={url} alt="" onClick={async e => {
-                        e.stopPropagation()
-                        
-                        if(userId){
-                            if(liked.some(like => like.product.id === product.id)){
-                                const response = await unLike(likeId)
-                                setUrl(unLikedUrl)
-                            }else{
-                                const response = await like(product.id, userId)
-                                setUrl(likedUrl)
-                            }
-                            setTimeout(() => {
-                                getByUserId(userId).then(function(val){setLiked(val.data)
-                              })
-                             }, 100)
-                        }
-                        
-                    }}/>
-                </div>
+                    <div className="prod-buttons">
+                        <button className="add-to-cart" onClick={(e)=>{handleAddToCartClick(e)}}>
+                            {cartButtonValue}
+                        </button>
+                        <img id={product.id} className="like" src={url} alt="" onClick={async e => {handleLikeClick(e)}}/>
+                    </div>
                 }
-                
-                
             </div>
         </motion.div>
     )

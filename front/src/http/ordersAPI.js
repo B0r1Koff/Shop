@@ -15,6 +15,11 @@ export const getUsersOrder = async (userId) => {
     return response
 }
 
+export const getAllOrders = async () => {
+    const response = await $host.get('orders/getAll')
+    return response
+}
+
 export const resetOrder = async(id)=>{
     const response = await $host.post('orders/delete/'+`${id}`)
     return response

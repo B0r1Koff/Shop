@@ -4,6 +4,8 @@ import { getProductById } from "../../http/productAPI";
 import "./Product.css"
 import { getProductsCharacteristics } from "../../http/characteristicAPI";
 import { createReview, deleteReview, getAllReviews } from "../../http/reviewAPI";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { CSSTransition, TransitionGroup } from "react-transition-group";
 
 const Product = ({user}) => {
     const {id} = useParams()
@@ -13,6 +15,8 @@ const Product = ({user}) => {
     const [rating, setRating] = useState(1);
     const [characteristics, setCharacteristics] = useState([])
     const [isCommenting, setIsCommenting] = useState(false)
+    
+    const queryClient = useQueryClient()
 
     useEffect(() => {
         setTimeout(() => {
@@ -24,11 +28,19 @@ const Product = ({user}) => {
            getProductsCharacteristics(id).then(function(val){setCharacteristics(val.data)})
         }, 10)  
     }, [])
+
+    const reviewQuery = useQuery({
+        queryKey: ["rewiews"],
+        queryFn: async () => getAllReviews(id)
+    })
+
     useEffect(() => {
-        setTimeout(() => {
-           getAllReviews(id).then(function(val){setReviews(val.data)})
-        }, 10)  
-    }, [])
+        if(!reviewQuery.isPending){
+            setReviews(reviewQuery.data.data)
+            console.log(reviews);
+        }
+        
+    }, [reviewQuery.data])
 
     const getImg = (image) => {
         return "data:image/jpeg;base64,"+image.body
@@ -44,15 +56,12 @@ const Product = ({user}) => {
     
   const averageRating = () => {
     if (reviews.length === 0) return 0;
-
     let sum = 0
-    
     reviews.map(review => {
-        sum = sum+review.grade
+        sum = sum + review.grade
     })
-
     return sum / reviews.length;
-  };
+  }; 
     
     return(
         <div>
@@ -100,7 +109,7 @@ const Product = ({user}) => {
                                                     alert("Напишите комментарий")
                                                     return
                                                 } else{
-                                                    const responce = await createReview(rating, comment, item.id, user.id)
+                                                    const responce = createReview(rating, comment, item.id, user.id)
                                                     console.log(responce);
                                                     setIsCommenting(false)
                                                 }
@@ -120,8 +129,10 @@ const Product = ({user}) => {
                                     )}
 
                                     <ul>
+                                    <TransitionGroup>
                                         {reviews.map((comment, index) => (
-                                            <li key={index} className="comment-item">
+                                            <CSSTransition key={index} timeout={500} classNames="slide">
+                                            <li className="comment-item">
                                                 <div className="comment-rating" style={{ color: '#c000b2aa' }}>
                                                 Рейтинг: {comment.grade}
                                                 </div>
@@ -130,12 +141,21 @@ const Product = ({user}) => {
                                                 {
                                                     comment.user.id === user.id &&
                                                     <button onClick={async(e) => {
-                                                        const responce = await deleteReview(comment.id)
+                                                        const responce = deleteReview(comment.id)
+                                                        let items = []
+                                                        reviews.map((item) => {
+                                                            if(item.user.id !== user.id){
+                                                                items.push(item)
+                                                            }
+                                                        })
+                                                        setReviews(items)
                                                         console.log(responce);
                                                     }}>Удалить</button>
                                                 }
                                             </li>
+                                            </CSSTransition>
                                         ))}
+                                    </TransitionGroup>
                                     </ul>
                                 </div>
                             </div>

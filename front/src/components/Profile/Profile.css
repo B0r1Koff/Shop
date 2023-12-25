@@ -39,6 +39,10 @@
     margin-right: 5px;
   }
   
+  .none-btn{
+    display: none;
+  }
+  
   .edit-button:hover {
     background-color: #c000b2aa;
   }

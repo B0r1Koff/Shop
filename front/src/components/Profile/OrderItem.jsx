@@ -1,7 +1,8 @@
 import React from "react";
 import "./Profile.css"
 
-const OrderItem = ({ item }) => (
+
+const OrderItem = ({ item}) => (
     <div>
       <p>{item.product.name}</p>
       <p>Количество: {item.quantity}</p>

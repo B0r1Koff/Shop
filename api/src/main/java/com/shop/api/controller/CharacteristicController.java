@@ -3,6 +3,7 @@ package com.shop.api.controller;
 import com.shop.api.dto.CharacteristicDTO;
 import com.shop.api.entity.Characteristic;
 import com.shop.api.service.CharacteristicService;
+import jakarta.transaction.Transactional;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ public class CharacteristicController {
     private final CharacteristicService characteristicService;
 
     @CrossOrigin(origins = "http://127.0.0.1:5173")
+    @Transactional
     @PostMapping("/create")
     public ResponseEntity<Characteristic> create(@RequestBody CharacteristicDTO dto){
         return new ResponseEntity<>(characteristicService.create(dto), HttpStatus.OK);

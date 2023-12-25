@@ -60,6 +60,8 @@ const Cart = observer(({user, cart}) => {
       </div>
         )
     })}
+      {
+        cartItems.length !== 0 &&
         <button className="save-order" onClick={async(e) => {
           const number = Math.floor(Math.random() * (1000000 - 1 + 1)) + 1
           cartItems.map(item => {
@@ -69,7 +71,9 @@ const Cart = observer(({user, cart}) => {
           })
           cart.clearCart()
         }}>Оформить заказ</button>
+      }
       </motion.div>        
+      
     );
   })
 

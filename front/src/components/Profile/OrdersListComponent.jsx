@@ -21,13 +21,13 @@ const groupOrdersByOrderId = (orders) => {
   }));
   };
 
-const OrdersListComponent = ({ orders }) => {
+const OrdersListComponent = ({ orders, user }) => {
     const groupedOrders = groupOrdersByOrderId(orders);
   
     return (
       <div>
         {groupedOrders.map(({ number, orderItems }, index) => (
-          <OrderComponent key={index} number = {number} orderItems = {orderItems} />
+          <OrderComponent key={index} number = {number} orderItems = {orderItems} user = {user}/>
         ))}
       </div>
     );

@@ -14,3 +14,8 @@ export const getProductById = async (id) => {
     const response = await $host.get('product/getById/' + id)
     return response
 }
+
+export const createProduct = async (formData) => {
+    const response = await $host.post('product/create', formData)
+    return response
+}
